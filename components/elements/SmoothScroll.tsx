@@ -2,18 +2,16 @@
 
 import { useEffect } from "react";
 import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-gsap.registerPlugin(ScrollTrigger);
 
 export default function SmoothScroll() {
   useEffect(() => {
     let smoother: any;
 
     const init = async () => {
-      const ScrollSmoother = (await import("gsap/ScrollSmoother")).default;
+      const { ScrollTrigger } = await import("gsap/ScrollTrigger");
+      const { ScrollSmoother } = await import("gsap/ScrollSmoother");
 
-      gsap.registerPlugin(ScrollSmoother);
+      gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
 
       smoother = ScrollSmoother.create({
         wrapper: "#smooth-wrapper",

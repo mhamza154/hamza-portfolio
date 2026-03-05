@@ -6,6 +6,7 @@ import { ThemeProvider } from "next-themes";
 import MacDoc from "@/components/elements/MacDoc";
 import Header from "@/components/layout/header/Header";
 import SmoothScroll from "@/components/elements/SmoothScroll";
+import PreloaderProvider from "@/components/providers/PreloaderProvider";
 
 const GeneralSans = localFont({
   src: [
@@ -54,16 +55,16 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${GeneralSans.variable} ${inter.variable} antialiased`}>
-        <SmoothScroll />
-        <Header />
-        <div id="smooth-wrapper">
-          <div id="smooth-content">
-            <ThemeProvider attribute="class" enableSystem defaultTheme="system">
-              {children}
-            </ThemeProvider>
-          </div>
-        </div>
-        <MacDoc />
+        <ThemeProvider attribute="class" enableSystem defaultTheme="system" storageKey="theme">
+          <PreloaderProvider>
+            <SmoothScroll />
+            <Header />
+            <div id="smooth-wrapper">
+              <div id="smooth-content">{children}</div>
+            </div>
+            <MacDoc />
+          </PreloaderProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

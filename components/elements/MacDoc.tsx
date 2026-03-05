@@ -12,19 +12,23 @@ import {
   Sun,
   Moon,
 } from "lucide-react";
+import { useTheme } from "next-themes";
 
 interface MacDockProps {
   activeSection?: string;
   onSectionChange?: (section: string) => void;
 }
 
-export default function MacDock({ activeSection = "home", onSectionChange }: MacDockProps) {
-  const [theme, setTheme] = useState<"light" | "dark">("light");
+export default function MacDock({
+  activeSection = "home",
+  onSectionChange,
+}: MacDockProps) {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const [activeScroll, setActiveScroll] = useState<string>("home");
   const dockRef = useRef<HTMLUListElement | null>(null);
   const iconWrappersRef = useRef<HTMLDivElement[]>([]);
   const [isMobile, setIsMobile] = useState(false);
+  const { theme, setTheme } = useTheme();
 
   useEffect(() => {
     const checkMobile = () => {
@@ -32,18 +36,10 @@ export default function MacDock({ activeSection = "home", onSectionChange }: Mac
     };
 
     checkMobile();
-    window.addEventListener('resize', checkMobile);
+    window.addEventListener("resize", checkMobile);
 
-    return () => window.removeEventListener('resize', checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
   }, []);
-
-  useEffect(() => {
-    if (theme === "dark") {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-  }, [theme]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -65,6 +61,7 @@ export default function MacDock({ activeSection = "home", onSectionChange }: Mac
     };
 
     window.addEventListener("scroll", handleScroll);
+    handleScroll();
     return () => window.removeEventListener("scroll", handleScroll);
   }, [onSectionChange]);
 
@@ -108,7 +105,7 @@ export default function MacDock({ activeSection = "home", onSectionChange }: Mac
 
     const handleMouseLeave = () => {
       iconWrappers.forEach((wrapper) => {
-        wrapper.style.transform = 'scale(1) translateY(0)';
+        wrapper.style.transform = "scale(1) translateY(0)";
       });
     };
 
@@ -131,21 +128,32 @@ export default function MacDock({ activeSection = "home", onSectionChange }: Mac
     { icon: FileText, href: "#", label: "Resume", id: "resume" },
   ];
 
-  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
+  const handleNavClick = (
+    e: React.MouseEvent<HTMLAnchorElement>,
+    id: string,
+  ) => {
     if (id === "github" || id === "resume") {
       e.preventDefault();
       return;
     }
+    e.preventDefault();
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }
   };
 
   return (
-    <div className="fixed bottom-3 sm:bottom-6 left-1/2 -translate-x-1/2 z-50 px-2 w-full max-w-full sm:w-auto">
+    <div className="fixed bottom-3 sm:bottom-6 left-1/2 -translate-x-1/2 z-10 px-2 w-full max-w-full sm:w-auto">
       <ul
         ref={dockRef}
         className="flex items-end justify-center px-2 sm:px-1 gap-1 sm:gap-2 w-auto mx-auto
-        bg-white/40 dark:bg-black/40 border dark:border
-        rounded-2xl sm:rounded-full shadow-2xl will-change-transform
-        py-2 sm:py-1"
+          bg-white dark:bg-black border dark:border
+          rounded-2xl sm:rounded-full shadow-2xl will-change-transform
+          py-2 sm:py-1"
       >
         {items.map((item, index) => {
           const Icon = item.icon;
@@ -174,7 +182,10 @@ export default function MacDock({ activeSection = "home", onSectionChange }: Mac
                   className="relative z-10 flex items-center justify-center group cursor-pointer"
                   onMouseEnter={() => !isMobile && setActiveIndex(index)}
                   onMouseLeave={() => !isMobile && setActiveIndex(null)}
-                  onClick={() => isMobile && setActiveIndex(activeIndex === index ? null : index)}
+                  onClick={() =>
+                    isMobile &&
+                    setActiveIndex(activeIndex === index ? null : index)
+                  }
                 >
                   <a
                     href={item.href}
@@ -193,13 +204,15 @@ export default function MacDock({ activeSection = "home", onSectionChange }: Mac
 
                   <span
                     className={`absolute bottom-full mb-2 sm:mb-3 left-1/2 -translate-x-1/2
-                    px-2 py-1 sm:px-3 sm:py-1.5 text-xs font-medium whitespace-nowrap
-                    rounded-lg bg-gray-900 dark:bg-gray-100
-                    text-white dark:text-gray-900
-                    translate-y-1 transition-all duration-200
-                    pointer-events-none shadow-xl ${
-                      activeIndex === index ? "opacity-100 translate-y-0" : "opacity-0 translate-y-1"
-                    }`}
+                      px-2 py-1 sm:px-3 sm:py-1.5 text-xs font-medium whitespace-nowrap
+                      rounded-lg bg-gray-900 dark:bg-gray-100
+                      text-white dark:text-gray-900
+                      translate-y-1 transition-all duration-200
+                      pointer-events-none shadow-xl ${
+                        activeIndex === index
+                          ? "opacity-100 translate-y-0"
+                          : "opacity-0 translate-y-1"
+                      }`}
                   >
                     {item.label}
                   </span>
@@ -229,10 +242,15 @@ export default function MacDock({ activeSection = "home", onSectionChange }: Mac
               className="relative z-10 flex items-center justify-center group"
               onMouseEnter={() => !isMobile && setActiveIndex(items.length)}
               onMouseLeave={() => !isMobile && setActiveIndex(null)}
-              onClick={() => isMobile && setActiveIndex(activeIndex === items.length ? null : items.length)}
+              onClick={() =>
+                isMobile &&
+                setActiveIndex(
+                  activeIndex === items.length ? null : items.length,
+                )
+              }
             >
               <button
-                onClick={() => setTheme(theme === "light" ? "dark" : "light")}
+                onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
                 className="flex items-center justify-center transition-colors duration-200 cursor-pointer"
               >
                 <Sun
@@ -247,13 +265,15 @@ export default function MacDock({ activeSection = "home", onSectionChange }: Mac
 
               <span
                 className={`absolute bottom-full mb-2 sm:mb-3 left-1/2 -translate-x-1/2
-                px-2 py-1 sm:px-3 sm:py-1.5 text-xs font-medium whitespace-nowrap
-                rounded-lg bg-gray-900 dark:bg-gray-100
-                text-white dark:text-gray-900
-                transition-all duration-200
-                pointer-events-none shadow-xl ${
-                  activeIndex === items.length ? "opacity-100 translate-y-0" : "opacity-0 translate-y-1"
-                }`}
+                  px-2 py-1 sm:px-3 sm:py-1.5 text-xs font-medium whitespace-nowrap
+                  rounded-lg bg-gray-900 dark:bg-gray-100
+                  text-white dark:text-gray-900
+                  transition-all duration-200
+                  pointer-events-none shadow-xl ${
+                    activeIndex === items.length
+                      ? "opacity-100 translate-y-0"
+                      : "opacity-0 translate-y-1"
+                  }`}
               >
                 Theme
               </span>

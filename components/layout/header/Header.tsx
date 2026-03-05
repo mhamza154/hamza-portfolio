@@ -41,7 +41,7 @@ export default function Header() {
   }, []);
 
   return (
-    <header className="w-full py-2 px-4 flex items-center justify-between max-w-7xl mx-auto fixed left-1/2 -translate-x-1/2 z-50">
+    <header className="w-full py-2 px-4 flex items-center justify-between max-w-7xl mx-auto fixed left-1/2 -translate-x-1/2 z-10">
       <Image
         src="/assets/img/logo.png"
         alt="Hamza-portfolio"
