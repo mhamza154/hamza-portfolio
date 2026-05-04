@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import localFont from "next/font/local";
-import "@/public/assets/css/globals.css";
+import "../public/assets/css/globals.css";
 import { ThemeProvider } from "next-themes";
 import MacDoc from "@/components/elements/MacDoc";
 import Header from "@/components/layout/header/Header";
@@ -13,22 +13,22 @@ import CustomCursor from "@/components/elements/CustomCursor";
 const GeneralSans = localFont({
   src: [
     {
-      path: "../public/assets/fonts/GeneralSans-Regular.ttf",
+      path: "./assets/fonts/GeneralSans-Regular.ttf",
       weight: "400",
       style: "normal",
     },
     {
-      path: "../public/assets/fonts/GeneralSans-Medium.ttf",
+      path: "./assets/fonts/GeneralSans-Medium.ttf",
       weight: "500",
       style: "normal",
     },
     {
-      path: "../public/assets/fonts/GeneralSans-SemiBold.ttf",
+      path: "./assets/fonts/GeneralSans-SemiBold.ttf",
       weight: "600",
       style: "normal",
     },
     {
-      path: "../public/assets/fonts/GeneralSans-Bold.ttf",
+      path: "./assets/fonts/GeneralSans-Bold.ttf",
       weight: "800",
       style: "normal",
     },
