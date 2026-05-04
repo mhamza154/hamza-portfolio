@@ -13,22 +13,22 @@ import CustomCursor from "@/components/elements/CustomCursor";
 const GeneralSans = localFont({
   src: [
     {
-      path: "./assets/fonts/GeneralSans-Regular.ttf",
+      path: "../public/assets/fonts/GeneralSans-Regular.ttf",
       weight: "400",
       style: "normal",
     },
     {
-      path: "./assets/fonts/GeneralSans-Medium.ttf",
+      path: "../public/assets/fonts/GeneralSans-Medium.ttf",
       weight: "500",
       style: "normal",
     },
     {
-      path: "./assets/fonts/GeneralSans-SemiBold.ttf",
+      path: "../public/assets/fonts/GeneralSans-SemiBold.ttf",
       weight: "600",
       style: "normal",
     },
     {
-      path: "./assets/fonts/GeneralSans-Bold.ttf",
+      path: "../public/assets/fonts/GeneralSans-Bold.ttf",
       weight: "800",
       style: "normal",
     },
